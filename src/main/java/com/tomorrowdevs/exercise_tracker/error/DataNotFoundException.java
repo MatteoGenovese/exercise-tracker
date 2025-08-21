@@ -1,0 +1,7 @@
+package com.tomorrowdevs.exercise_tracker.error;
+
+public class DataNotFoundException extends RuntimeException {
+  public DataNotFoundException(String message) {
+    super(message);
+  }
+}

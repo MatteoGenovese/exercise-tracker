@@ -3,7 +3,7 @@ package com.tomorrowdevs.exercise_tracker.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomorrowdevs.exercise_tracker.model.UserRequest;
 import com.tomorrowdevs.exercise_tracker.model.UserResponse;
-import com.tomorrowdevs.exercise_tracker.service.UserWritter;
+import com.tomorrowdevs.exercise_tracker.service.implementation.UserWriterImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,38 +22,38 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(
-        controllers = UserWritterController.class,
+        controllers = UserWriterController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class}
-        )
-class UserWritterControllerTest {
+)
+class UserWriterImplControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private UserWritter userWritter;
+    private UserWriterImpl userWriterImpl;
 
     @Test
     @DisplayName("Should Return User if username length > 8 ")
     void createUser_whenDataAreCorrect_thenShouldReturnUser() throws Exception {
 
+        // Arrange
         String user = "longerNameThen8Character";
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(user));
-
-        when(userWritter.save(any(UserRequest.class)))
+                                                              .contentType(MediaType.APPLICATION_JSON)
+                                                              .accept(MediaType.APPLICATION_JSON)
+                                                              .content(new ObjectMapper().writeValueAsString(user));
+        when(userWriterImpl.save(any(UserRequest.class)))
                 .thenReturn(new UserResponse(user));
 
+        // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         String responseBodyAsString = mvcResult.getResponse().getContentAsString();
         UserResponse newUser = new ObjectMapper().readValue(responseBodyAsString, UserResponse.class);
 
-        Assertions.assertEquals(user, newUser.getUserName());
+        // Assert
         Assertions.assertNotNull(newUser.getUuid());
-
+        Assertions.assertEquals(user, newUser.getUserName());
     }
 
 
@@ -61,22 +61,22 @@ class UserWritterControllerTest {
     @DisplayName("Should Return error if username length < 8 ")
     void createUser_whenDataAreInvalid_thenShouldReturnError() throws Exception {
 
+        // Arrange
         String user = "short";
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/users")
                                                               .contentType(MediaType.APPLICATION_JSON)
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
-
-        when(userWritter.save(any(UserRequest.class)))
+        when(userWriterImpl.save(any(UserRequest.class)))
                 .thenReturn(new UserResponse(user));
 
+        // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
 
+        // Assert
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(),
                                 mvcResult.getResponse().getStatus(),
                                 "Incorrect HTTP status code returned");
-
     }
 
 }
