@@ -1,9 +1,9 @@
 package com.tomorrowdevs.exercise_tracker.service.implementation;
 
-import com.tomorrowdevs.exercise_tracker.model.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
+import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.model.domain.UserDomain;
 import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
-import com.tomorrowdevs.exercise_tracker.service.UserWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,12 +11,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -48,10 +47,10 @@ class UserWriterImplTest {
     void createUser_whenUsernameIsValid_thenWriteItOnFile(){
 
         // Arrange
-        when(repository.save(any(UserRequest.class))).thenReturn(user1);
+        when(repository.save(any(UserDomain.class))).thenReturn(user1);
 
         // Act
-        UserResponse response = userWriter.save(new UserRequest("testtest1"));
+        UserResponse response = userWriter.save(new UserRequest(user1.getUserName()));
 
         // Assert
         assertNotNull(response.getUserName());

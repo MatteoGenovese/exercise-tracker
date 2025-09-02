@@ -1,7 +1,5 @@
 package com.tomorrowdevs.exercise_tracker.error;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;

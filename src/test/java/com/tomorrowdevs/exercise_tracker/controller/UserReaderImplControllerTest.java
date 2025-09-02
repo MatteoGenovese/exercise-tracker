@@ -2,7 +2,8 @@ package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
+import com.tomorrowdevs.exercise_tracker.controller.user.UserReaderController;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.service.UserReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(

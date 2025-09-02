@@ -1,7 +1,8 @@
 package com.tomorrowdevs.exercise_tracker.service.implementation;
 
-import com.tomorrowdevs.exercise_tracker.model.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
+import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.model.domain.UserDomain;
 import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
 import com.tomorrowdevs.exercise_tracker.service.UserWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ public class UserWriterImpl implements UserWriter {
     private UserRepository userRepository;
 
     public UserResponse save(UserRequest user) {
-        return userRepository.save(user);
+        UserDomain userDomain = new UserDomain(user.getUsername());
+        return userRepository.save(userDomain);
     }
 
 }

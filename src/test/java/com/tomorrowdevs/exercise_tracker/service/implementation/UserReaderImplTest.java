@@ -1,7 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.service.implementation;
 
 import com.tomorrowdevs.exercise_tracker.error.DataNotFoundException;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

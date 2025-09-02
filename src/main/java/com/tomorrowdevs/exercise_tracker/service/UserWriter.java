@@ -1,9 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.service;
 
-import com.tomorrowdevs.exercise_tracker.model.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
-
-import java.util.List;
+import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 
 public interface UserWriter {
 

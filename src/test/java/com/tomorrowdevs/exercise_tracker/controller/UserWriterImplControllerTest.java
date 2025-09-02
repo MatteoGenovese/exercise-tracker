@@ -1,8 +1,9 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.model.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
+import com.tomorrowdevs.exercise_tracker.controller.user.UserWriterController;
+import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.service.implementation.UserWriterImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

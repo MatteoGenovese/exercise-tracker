@@ -1,8 +1,10 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.tomorrowdevs.exercise_tracker.error.ApiError;
-import com.tomorrowdevs.exercise_tracker.model.UserResponse;
-import org.junit.jupiter.api.*;
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -12,7 +14,8 @@ import org.springframework.http.*;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
