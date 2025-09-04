@@ -2,18 +2,16 @@ package com.tomorrowdevs.exercise_tracker.utils;
 
 import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Component
 public class FileHandler {
-
 
     public static final String BLANK_FILE_CONTENT = """
             [ ]
@@ -23,21 +21,17 @@ public class FileHandler {
             \t\tid: "%s", 
             \t\tusername: "%s"
             \t}""";
-    private final String directory;
-    private final String filename;
+    PathResolver pathResolver;
 
-    public FileHandler(
-            @Value("${app.files.directory}") String directory,
-            @Value("${app.files.filename}") String filename) {
-
-        this.directory = directory;
-        this.filename = filename;
+    @Autowired
+    public FileHandler(PathResolver pathResolver){
+            this.pathResolver= pathResolver;
     }
 
     public UserResponse save(UserEntity userEntity) {
-        createFolder(getDirectoryPath());
-        createBlankFile(getFilePath());
-        modifyFile(getFilePath(), userEntity);
+        createFolder(pathResolver.getDirectoryPath());
+        createBlankFile(pathResolver.getFilePath());
+        modifyFile(pathResolver.getFilePath(), userEntity);
         return new UserResponse(userEntity.getUserName(), userEntity.getUuid());
     }
 
@@ -47,18 +41,17 @@ public class FileHandler {
 
     public void createFolder(Path dirPath) {
 
-        if( isFolderOrFileExists(dirPath)){
+        if( fileOrDirectoryNotExists(dirPath)){
             createFolderOrLaunchException(dirPath);
         }
     }
 
     public void createBlankFile(Path filePath) {
 
-        if( isFolderOrFileExists(filePath)){
+        if( fileOrDirectoryNotExists(filePath)){
             createFileOrLaunchException(filePath, BLANK_FILE_CONTENT);
         }
     }
-
 
     public void modifyFile(Path path, UserEntity user) {
 
@@ -80,7 +73,7 @@ public class FileHandler {
     private void writeOnBlankFile(String string) {
 
         try {
-            Files.writeString(getFilePath(), string);
+            Files.writeString(pathResolver.getFilePath(), string);
         } catch( IOException e ) {
             throw new RuntimeException(e);
         }
@@ -105,17 +98,8 @@ public class FileHandler {
         }
     }
 
-    public static boolean isFolderOrFileExists(Path dirPath){
+    public static boolean fileOrDirectoryNotExists(Path dirPath){
         return !Files.exists(dirPath);
     }
 
-    public Path getFilePath(){
-
-        Path dirPath = Paths.get(directory);
-        return dirPath.resolve(filename);
-    }
-
-    public Path getDirectoryPath(){
-        return Paths.get(directory);
-    }
 }

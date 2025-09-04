@@ -1,43 +1,54 @@
 package com.tomorrowdevs.exercise_tracker.utils;
 
+import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
+)
+@TestPropertySource(locations = "classpath:application-test.properties")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FileHandlerTest {
 
     @TempDir
     static Path tempDir;
 
+    @Autowired
+    private FileHandler fileHandler;
+
+    @Autowired
+    private PathResolver pathResolver;
+
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry registry) {
 
         registry.add("app.files.directory", () -> tempDir.resolve("data/files").toString());
-        registry.add("app.files.filename", () -> tempDir.resolve("data/files/data.txt").toString());
+        registry.add("app.files.filename", () -> "data.txt");
     }
-
-    @Autowired
-    private FileHandler fileHandler;
 
     @Test
     @DisplayName("Should Create Folder")
+    @Order(1)
     void createFolder_whenMissing_thenCreatesIt() {
 
 
         // Arrange
-        Path dirPath = tempDir.resolve("data/files");
+        Path dirPath = pathResolver.getDirectoryPath();
 
         // Act
         fileHandler.createFolder(dirPath);
@@ -48,14 +59,13 @@ class FileHandlerTest {
 
     @Test
     @DisplayName("Should Create the blank File")
+    @Order(2)
     void createFile_whenMissing_thenCreatesIt() throws IOException {
 
         // Arrange
-        String expected = """
-                    [ ]
-                    """;
-        Path dirPath = tempDir.resolve("data/files");
-        Path filePath = tempDir.resolve("data/files/data.txt");
+        String expected = "[ ]\n";
+        Path dirPath = pathResolver.getDirectoryPath();
+        Path filePath = pathResolver.getFilePath();
 
         // Act
         fileHandler.createFolder(dirPath);
@@ -63,17 +73,18 @@ class FileHandlerTest {
 
         // Assert
         assertThat(Files.exists(dirPath)).isTrue();
-        assertThat(Files.readString(filePath).equals(expected)).isTrue();
+        assertEquals(expected, Files.readString(filePath).replace("\r\n", "\n"));
     }
 
     @Test
     @DisplayName("Should write on file")
+    @Order(3)
     void writeOnFile_whenItIsCreated_thenWritesOnIt() throws IOException {
 
         // Arrange
         UserEntity userEntity = new UserEntity("username", "id0000000");
-        Path dirPath = tempDir.resolve("data/files");
-        Path filePath = tempDir.resolve("data/files/data.txt");
+        Path dirPath = pathResolver.getDirectoryPath();
+        Path filePath = pathResolver.getFilePath();
 
         // Act
         fileHandler.createFolder(dirPath);
@@ -81,13 +92,25 @@ class FileHandlerTest {
         fileHandler.modifyFile(filePath, userEntity);
 
         // Assert
-        assertThat(Files.exists(tempDir.resolve("data/files/data.txt"))).isTrue();
+        assertThat(Files.exists(dirPath)).isTrue();
+        assertTrue(Files.readString(filePath).contains("username"));
+        assertTrue(Files.readString(filePath).contains("id"));
     }
 
     @Test
     @DisplayName("Should Save a new User")
+    @Order(4)
     void saveUser_whenUserDetailsProvided_thenShouldWriteUserInTheFile(){
 
-        
+        // Arrange
+        UserEntity userEntity = new UserEntity("username", "id0000000");
+
+        // Act
+        UserResponse response = fileHandler.save(userEntity);
+
+        // Assert
+        assertEquals(response.getUserName(), userEntity.getUserName());
+        assertEquals(response.getUuid(), userEntity.getUuid());
     }
+
 }

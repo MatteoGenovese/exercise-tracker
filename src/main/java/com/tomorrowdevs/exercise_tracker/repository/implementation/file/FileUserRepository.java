@@ -1,10 +1,11 @@
-package com.tomorrowdevs.exercise_tracker.repository.implementation;
+package com.tomorrowdevs.exercise_tracker.repository.implementation.file;
 
 import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.model.domain.UserDomain;
 import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
 import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
 import com.tomorrowdevs.exercise_tracker.utils.FileHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Repository
 public class FileUserRepository implements UserRepository {
 
+    @Autowired
     private FileHandler fileHandler;
 
     @Override public List <UserResponse> read() {
