@@ -39,8 +39,8 @@ class UserReaderImplControllerTest {
     void readUserlist_whenDataAreFound_thenShouldReturnUsers() throws Exception {
 
         // Arrange
-        UserResponse user1 = new UserResponse("testtest1");
-        UserResponse user2 = new UserResponse("testtest2");
+        UserResponse user1 = new UserResponse("testtest1", "1");
+        UserResponse user2 = new UserResponse("testtest2", "2");
         List <UserResponse> userList = List.of(user1, user2);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/users")

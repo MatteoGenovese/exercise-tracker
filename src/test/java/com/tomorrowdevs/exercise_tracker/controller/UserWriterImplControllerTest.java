@@ -45,7 +45,7 @@ class UserWriterImplControllerTest {
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
         when(userWriterImpl.save(any(UserRequest.class)))
-                .thenReturn(new UserResponse(user));
+                .thenReturn(new UserResponse(user, "1"));
 
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
@@ -69,7 +69,7 @@ class UserWriterImplControllerTest {
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
         when(userWriterImpl.save(any(UserRequest.class)))
-                .thenReturn(new UserResponse(user));
+                .thenReturn(new UserResponse(user, "1"));
 
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();

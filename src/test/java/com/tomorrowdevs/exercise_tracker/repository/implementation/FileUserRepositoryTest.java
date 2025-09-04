@@ -7,6 +7,7 @@ import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
 import com.tomorrowdevs.exercise_tracker.repository.implementation.file.FileUserRepository;
 import com.tomorrowdevs.exercise_tracker.utils.FileHandler;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,13 @@ class FileUserRepositoryTest {
     @Mock
     private FileHandler fileHandler;
 
+    @BeforeEach
+    void setup(){
+
+        UserResponse userResponse1 = new UserResponse("username1", "1");
+        UserResponse userResponse2 = new UserResponse("username2", "2");
+    }
+
     @Test
     void saveUser(){
 
@@ -34,7 +42,7 @@ class FileUserRepositoryTest {
 
         // Act
         Mockito.when(fileHandler.save(Mockito.any(UserEntity.class))).thenReturn(new UserResponse(
-                "Username"));
+                "Username", "1"));
         UserResponse response = fileUserRepository.save(userDomain);
 
         // Assert
@@ -47,8 +55,8 @@ class FileUserRepositoryTest {
     void readUsers(){
 
         // Arrange
-        UserResponse userResponse1 = new UserResponse("username1");
-        UserResponse userResponse2 = new UserResponse("username2");
+        UserResponse userResponse1 = new UserResponse("username1", "1");
+        UserResponse userResponse2 = new UserResponse("username2", "2");
 
         List<UserResponse> userResponseList = List.of(userResponse1, userResponse2);
 

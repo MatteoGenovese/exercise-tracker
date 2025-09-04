@@ -1,10 +1,13 @@
 package com.tomorrowdevs.exercise_tracker.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,14 +21,16 @@ public class FileHandler {
             """;
     public static final String USER_BLANK = """
             \t{
-            \t\tid: "%s", 
-            \t\tusername: "%s"
+            \t\t"userName" : "%s",
+            \t\t"uuid" : "%s" 
             \t}""";
     PathResolver pathResolver;
+    ObjectMapper objectMapper;
 
     @Autowired
-    public FileHandler(PathResolver pathResolver){
+    public FileHandler(PathResolver pathResolver, ObjectMapper objectMapper){
             this.pathResolver= pathResolver;
+            this.objectMapper= objectMapper;
     }
 
     public UserResponse save(UserEntity userEntity) {
@@ -36,7 +41,21 @@ public class FileHandler {
     }
 
     public List <UserResponse> read() {
-        return null;
+        if( fileOrDirectoryNotExists(pathResolver.getFilePath())){
+            return null;
+        } else {
+            return extractUsersFromData();
+        }
+    }
+
+    private List <UserResponse> extractUsersFromData() {
+
+        try {
+            return objectMapper.readValue(new File(pathResolver.getFilePath().toUri()),
+                                          new TypeReference<List<UserResponse>>() {});
+        } catch( IOException e ) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void createFolder(Path dirPath) {
@@ -57,7 +76,7 @@ public class FileHandler {
 
         try {
             String fileContent = Files.readString(path).replace("\r\n", "\n");
-            String newUser = USER_BLANK.formatted(user.getUuid(), user.getUserName());
+            String newUser = USER_BLANK.formatted(user.getUserName(), user.getUuid());
             int endFileIndex = fileContent.lastIndexOf("]")-1;
             boolean alreadyHasUser = fileContent.contains("username");
             String prefix = alreadyHasUser? ",\n" : "\n";

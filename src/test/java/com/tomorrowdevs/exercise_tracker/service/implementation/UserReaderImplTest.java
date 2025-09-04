@@ -36,8 +36,8 @@ class UserReaderImplTest {
     @BeforeEach
     void setup(){
         // Arrange
-        user1 = new UserResponse("testtest1");
-        user2 = new UserResponse("testtest2");
+        user1 = new UserResponse("testtest1", "1");
+        user2 = new UserResponse("testtest2", "2");
         userListMock = List.of(user1, user2);
     }
 
