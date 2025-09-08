@@ -2,9 +2,9 @@ package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.controller.user.UserReaderController;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.service.UserReader;
+import com.tomorrowdevs.exercise_tracker.users.controller.GetUserControllerV1;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.service.UserReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(
-        controllers = UserReaderController.class,
+        controllers = GetUserControllerV1.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class}
 )
 class UserReaderImplControllerTest {

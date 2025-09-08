@@ -1,11 +1,11 @@
 package com.tomorrowdevs.exercise_tracker.repository.implementation;
 
-import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.model.domain.UserDomain;
-import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
-import com.tomorrowdevs.exercise_tracker.repository.implementation.file.FileUserRepository;
-import com.tomorrowdevs.exercise_tracker.utils.FileHandler;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
+import com.tomorrowdevs.exercise_tracker.users.model.persistence.UserEntity;
+import com.tomorrowdevs.exercise_tracker.users.repository.implementation.file.FileUserRepository;
+import com.tomorrowdevs.exercise_tracker.users.utils.FileHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,12 +38,12 @@ class FileUserRepositoryTest {
 
         // Arrange
         UserRequest userRequest = new UserRequest("Username");
-        UserDomain userDomain = new UserDomain(userRequest.getUsername());
+        User user = User.create(userRequest.getUsername());
 
         // Act
-        Mockito.when(fileHandler.save(Mockito.any(UserEntity.class))).thenReturn(new UserResponse(
+        Mockito.when(fileHandler.save(Mockito.any(User.class))).thenReturn(new UserResponse(
                 "Username", "1"));
-        UserResponse response = fileUserRepository.save(userDomain);
+        UserResponse response = fileUserRepository.save(user);
 
         // Assert
         Assertions.assertEquals(response.getUserName(), userRequest.getUsername());

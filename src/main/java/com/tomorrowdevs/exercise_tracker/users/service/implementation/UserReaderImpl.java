@@ -1,10 +1,10 @@
-package com.tomorrowdevs.exercise_tracker.service.implementation;
+package com.tomorrowdevs.exercise_tracker.users.service.implementation;
 
 
-import com.tomorrowdevs.exercise_tracker.error.DataNotFoundException;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
-import com.tomorrowdevs.exercise_tracker.service.UserReader;
+import com.tomorrowdevs.exercise_tracker.users.error.DataNotFoundException;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.repository.UserRepository;
+import com.tomorrowdevs.exercise_tracker.users.service.UserReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

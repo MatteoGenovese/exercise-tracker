@@ -1,9 +1,9 @@
-package com.tomorrowdevs.exercise_tracker.utils;
+package com.tomorrowdevs.exercise_tracker.users.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,11 +33,11 @@ public class FileHandler {
             this.objectMapper= objectMapper;
     }
 
-    public UserResponse save(UserEntity userEntity) {
+    public UserResponse save(User user) {
         createFolder(pathResolver.getDirectoryPath());
         createBlankFile(pathResolver.getFilePath());
-        modifyFile(pathResolver.getFilePath(), userEntity);
-        return new UserResponse(userEntity.getUserName(), userEntity.getUuid());
+        modifyFile(pathResolver.getFilePath(), user);
+        return new UserResponse(user.username(), user.uuid().toString());
     }
 
     public List <UserResponse> read() {
@@ -72,11 +72,11 @@ public class FileHandler {
         }
     }
 
-    public void modifyFile(Path path, UserEntity user) {
+    public void modifyFile(Path path, User user) {
 
         try {
-            String fileContent = Files.readString(path).replace("\r\n", "\n");
-            String newUser = USER_BLANK.formatted(user.getUserName(), user.getUuid());
+            String fileContent = Files.readString(path);
+            String newUser = USER_BLANK.formatted(user.username(), user.uuid().toString());
             int endFileIndex = fileContent.lastIndexOf("]")-1;
             boolean alreadyHasUser = fileContent.contains("username");
             String prefix = alreadyHasUser? ",\n" : "\n";

@@ -1,4 +1,4 @@
-package com.tomorrowdevs.exercise_tracker.repository.implementation.file;
+package com.tomorrowdevs.exercise_tracker.users.repository.implementation.file;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

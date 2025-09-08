@@ -1,7 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
-import com.tomorrowdevs.exercise_tracker.error.ApiError;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.error.ApiError;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

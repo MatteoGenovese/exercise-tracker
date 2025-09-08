@@ -1,10 +1,10 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.controller.user.UserWriterController;
-import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.service.implementation.UserWriterImpl;
+import com.tomorrowdevs.exercise_tracker.users.controller.SaveUserControllerV1;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
+import com.tomorrowdevs.exercise_tracker.users.service.implementation.UserWriterImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(
-        controllers = UserWriterController.class,
+        controllers = SaveUserControllerV1.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class}
 )
 class UserWriterImplControllerTest {
@@ -44,7 +44,7 @@ class UserWriterImplControllerTest {
                                                               .contentType(MediaType.APPLICATION_JSON)
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
-        when(userWriterImpl.save(any(UserRequest.class)))
+        when(userWriterImpl.save(any(User.class)))
                 .thenReturn(new UserResponse(user, "1"));
 
         // Act
@@ -68,7 +68,7 @@ class UserWriterImplControllerTest {
                                                               .contentType(MediaType.APPLICATION_JSON)
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
-        when(userWriterImpl.save(any(UserRequest.class)))
+        when(userWriterImpl.save(any(User.class)))
                 .thenReturn(new UserResponse(user, "1"));
 
         // Act

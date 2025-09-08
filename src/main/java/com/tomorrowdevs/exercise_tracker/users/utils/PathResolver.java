@@ -1,6 +1,6 @@
-package com.tomorrowdevs.exercise_tracker.utils;
+package com.tomorrowdevs.exercise_tracker.users.utils;
 
-import com.tomorrowdevs.exercise_tracker.repository.implementation.file.StorageProps;
+import com.tomorrowdevs.exercise_tracker.users.repository.implementation.file.StorageProps;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 

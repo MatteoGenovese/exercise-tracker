@@ -1,7 +1,9 @@
 package com.tomorrowdevs.exercise_tracker.utils;
 
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.model.persistence.UserEntity;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
+import com.tomorrowdevs.exercise_tracker.users.utils.FileHandler;
+import com.tomorrowdevs.exercise_tracker.users.utils.PathResolver;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,26 +91,6 @@ class FileHandlerTest {
         assertEquals(expected, Files.readString(filePath).replace("\r\n", "\n"));
     }
 
-//    @Test
-//    @DisplayName("Should write on file")
-//    @Order(3)
-//    void writeOnFile_whenItIsCreated_thenWritesOnIt() throws IOException {
-//
-//        // Arrange
-//        UserEntity userEntity = new UserEntity("username", "id0000000");
-//        Path dirPath = pathResolver.getDirectoryPath();
-//        Path filePath = pathResolver.getFilePath();
-//
-//        // Act
-//        fileHandler.createFolder(dirPath);
-//        fileHandler.createBlankFile(filePath);
-//        fileHandler.modifyFile(filePath, userEntity);
-//
-//        // Assert
-//        assertThat(Files.exists(dirPath)).isTrue();
-//        assertTrue(Files.readString(filePath).contains("userName"));
-//        assertTrue(Files.readString(filePath).contains("uuid"));
-//    }
 
     @Test
     @DisplayName("Should Save a new User")
@@ -116,14 +98,14 @@ class FileHandlerTest {
     void saveUser_whenUserDetailsProvided_thenShouldWriteUserInTheFile(){
 
         // Arrange
-        UserEntity userEntity = new UserEntity("username", "id0000000");
+        User user = User.create("username");
 
         // Act
-        UserResponse response = fileHandler.save(userEntity);
+        UserResponse response = fileHandler.save(user);
 
         // Assert
-        assertEquals(response.getUserName(), userEntity.getUserName());
-        assertEquals(response.getUuid(), userEntity.getUuid());
+        assertEquals(response.getUserName(), user.username());
+        assertEquals(response.getUuid(), user.uuid().toString());
     }
 
     @Test

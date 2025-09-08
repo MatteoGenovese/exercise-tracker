@@ -1,9 +1,10 @@
 package com.tomorrowdevs.exercise_tracker.service.implementation;
 
-import com.tomorrowdevs.exercise_tracker.model.api.UserRequest;
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.model.domain.UserDomain;
-import com.tomorrowdevs.exercise_tracker.repository.UserRepository;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserRequest;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
+import com.tomorrowdevs.exercise_tracker.users.repository.UserRepository;
+import com.tomorrowdevs.exercise_tracker.users.service.implementation.UserWriterImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,10 +48,10 @@ class UserWriterImplTest {
     void createUser_whenUsernameIsValid_thenWriteItOnFile(){
 
         // Arrange
-        when(repository.save(any(UserDomain.class))).thenReturn(user1);
+        when(repository.save(any(User.class))).thenReturn(user1);
 
         // Act
-        UserResponse response = userWriter.save(new UserRequest(user1.getUserName()));
+        UserResponse response = userWriter.save(User.create(user1.getUserName()));
 
         // Assert
         assertNotNull(response.getUserName());

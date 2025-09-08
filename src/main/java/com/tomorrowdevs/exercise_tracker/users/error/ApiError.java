@@ -1,4 +1,4 @@
-package com.tomorrowdevs.exercise_tracker.error;
+package com.tomorrowdevs.exercise_tracker.users.error;
 
 import org.springframework.http.HttpStatus;
 

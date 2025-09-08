@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
-import com.tomorrowdevs.exercise_tracker.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserWriterControllerIntegrationTest {
+class UserWriterControllerV1IntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;

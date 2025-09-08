@@ -1,4 +1,4 @@
-package com.tomorrowdevs.exercise_tracker.model.api;
+package com.tomorrowdevs.exercise_tracker.users.model.api;
 
 import jakarta.validation.constraints.Size;
 
