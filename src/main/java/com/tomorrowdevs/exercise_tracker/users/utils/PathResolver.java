@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 @Component
 @EnableConfigurationProperties(StorageProps.class)
 public class PathResolver {
@@ -15,17 +16,15 @@ public class PathResolver {
     private final String filename;
 
     public PathResolver(StorageProps props) {
-
         this.directoryPath = Paths.get(props.directory());
         this.filename = props.filename();
     }
 
-    public Path getFilePath(){
-
+    public Path getFilePath() {
         return directoryPath.resolve(filename);
     }
 
-    public Path getDirectoryPath(){
+    public Path getDirectoryPath() {
         return directoryPath;
     }
 

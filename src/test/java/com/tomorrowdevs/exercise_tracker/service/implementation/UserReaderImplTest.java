@@ -1,8 +1,8 @@
 package com.tomorrowdevs.exercise_tracker.service.implementation;
 
 import com.tomorrowdevs.exercise_tracker.users.error.DataNotFoundException;
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
-import com.tomorrowdevs.exercise_tracker.users.repository.UserRepository;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
+import com.tomorrowdevs.exercise_tracker.users.repository.UserFileRepository;
 import com.tomorrowdevs.exercise_tracker.users.service.implementation.UserReaderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,17 +28,17 @@ class UserReaderImplTest {
     private UserReaderImpl userReader;
 
     @Mock
-    private UserRepository repository;
+    private UserFileRepository repository;
 
-    private UserResponse user1;
-    private UserResponse user2;
-    private List <UserResponse> userListMock;
+    private UserJpaEntity user1;
+    private UserJpaEntity user2;
+    private List <UserJpaEntity> userListMock;
 
     @BeforeEach
     void setup(){
         // Arrange
-        user1 = new UserResponse("testtest1", "1");
-        user2 = new UserResponse("testtest2", "2");
+        user1 = new UserJpaEntity("testtest1", "1");
+        user2 = new UserJpaEntity("testtest2", "2");
         userListMock = List.of(user1, user2);
     }
 
@@ -50,7 +50,7 @@ class UserReaderImplTest {
         when(repository.read()).thenReturn(userListMock);
 
         // Act
-        List <UserResponse> userList = userReader.read();
+        List <UserJpaEntity> userList = userReader.read();
 
         // Assert
         assertNotNull(userList, "should not be null");

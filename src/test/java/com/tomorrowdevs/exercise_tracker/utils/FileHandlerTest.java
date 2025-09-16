@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.utils;
 
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
 import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 import com.tomorrowdevs.exercise_tracker.users.utils.FileHandler;
 import com.tomorrowdevs.exercise_tracker.users.utils.PathResolver;
@@ -50,7 +50,7 @@ class FileHandlerTest {
     void readUsers_whenFileDoesNotExist_shouldReturnNull() {
 
         // Act
-        List <UserResponse> read = fileHandler.read();
+        List <User> read = fileHandler.read();
 
         // Assert
         Assertions.assertNull(read);
@@ -101,20 +101,20 @@ class FileHandlerTest {
         User user = User.create("username");
 
         // Act
-        UserResponse response = fileHandler.save(user);
+        User response = fileHandler.save(user);
 
         // Assert
-        assertEquals(response.getUserName(), user.username());
-        assertEquals(response.getUuid(), user.uuid().toString());
+        assertEquals(response.username(), user.username());
+        assertEquals(response.uuid().toString(), user.uuid().toString());
     }
 
     @Test
     @DisplayName("Should read all the users")
     void readUsers_whenUsersAreCollected_thenShouldReturnUserList(){
 
-        List <UserResponse> responseList = fileHandler.read();
+        List <User> responseList = fileHandler.read();
 
         // Assert
-        Assertions.assertEquals("username", responseList.getFirst().getUserName());
+        Assertions.assertEquals("username", responseList.getFirst().username());
     }
 }

@@ -3,7 +3,7 @@ package com.tomorrowdevs.exercise_tracker.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomorrowdevs.exercise_tracker.users.controller.GetUserControllerV1;
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
 import com.tomorrowdevs.exercise_tracker.users.service.UserReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -39,9 +39,9 @@ class UserReaderImplControllerTest {
     void readUserlist_whenDataAreFound_thenShouldReturnUsers() throws Exception {
 
         // Arrange
-        UserResponse user1 = new UserResponse("testtest1", "1");
-        UserResponse user2 = new UserResponse("testtest2", "2");
-        List <UserResponse> userList = List.of(user1, user2);
+        UserJpaEntity user1 = new UserJpaEntity("testtest1", "1");
+        UserJpaEntity user2 = new UserJpaEntity("testtest2", "2");
+        List <UserJpaEntity> userList = List.of(user1, user2);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/users")
                                                               .contentType(MediaType.APPLICATION_JSON)
@@ -51,9 +51,9 @@ class UserReaderImplControllerTest {
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         String responseBodyAsString = mvcResult.getResponse().getContentAsString();
-        List<UserResponse> newUser = new ObjectMapper()
+        List<UserJpaEntity> newUser = new ObjectMapper()
                 .readValue(responseBodyAsString,
-                           new TypeReference <List<UserResponse>>() {});
+                           new TypeReference <List<UserJpaEntity>>() {});
 
         // Assert
         Assertions.assertFalse(newUser.isEmpty());

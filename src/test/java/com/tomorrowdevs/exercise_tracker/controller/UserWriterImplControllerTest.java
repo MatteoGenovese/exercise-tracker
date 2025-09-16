@@ -2,7 +2,7 @@ package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomorrowdevs.exercise_tracker.users.controller.SaveUserControllerV1;
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
 import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 import com.tomorrowdevs.exercise_tracker.users.service.implementation.UserWriterImpl;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -45,12 +47,12 @@ class UserWriterImplControllerTest {
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
         when(userWriterImpl.save(any(User.class)))
-                .thenReturn(new UserResponse(user, "1"));
+                .thenReturn(User.create(user, UUID.randomUUID()));
 
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         String responseBodyAsString = mvcResult.getResponse().getContentAsString();
-        UserResponse newUser = new ObjectMapper().readValue(responseBodyAsString, UserResponse.class);
+        UserJpaEntity newUser = new ObjectMapper().readValue(responseBodyAsString, UserJpaEntity.class);
 
         // Assert
         Assertions.assertNotNull(newUser.getUuid());
@@ -69,7 +71,7 @@ class UserWriterImplControllerTest {
                                                               .accept(MediaType.APPLICATION_JSON)
                                                               .content(new ObjectMapper().writeValueAsString(user));
         when(userWriterImpl.save(any(User.class)))
-                .thenReturn(new UserResponse(user, "1"));
+                .thenReturn(User.create(user, UUID.randomUUID()));
 
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();

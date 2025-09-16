@@ -1,16 +1,15 @@
 package com.tomorrowdevs.exercise_tracker.users.repository;
 
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
-public interface UserRepository {
+public interface UserFileRepository {
 
-    List<UserResponse> read();
-    UserResponse save(User user);
+    List <User> read();
 
-
+    User save(User user);
 }

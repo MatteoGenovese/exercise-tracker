@@ -1,11 +1,12 @@
 package com.tomorrowdevs.exercise_tracker.users.service;
 
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 
 import java.util.List;
 
+
 public interface UserReader {
 
-   List<UserResponse> read();
+    List <User> read();
 
 }

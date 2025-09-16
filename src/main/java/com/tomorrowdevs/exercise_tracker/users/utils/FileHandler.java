@@ -2,7 +2,6 @@ package com.tomorrowdevs.exercise_tracker.users.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
 import com.tomorrowdevs.exercise_tracker.users.model.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+
 
 @Component
 public class FileHandler {
@@ -28,31 +28,32 @@ public class FileHandler {
     ObjectMapper objectMapper;
 
     @Autowired
-    public FileHandler(PathResolver pathResolver, ObjectMapper objectMapper){
-            this.pathResolver= pathResolver;
-            this.objectMapper= objectMapper;
+    public FileHandler(PathResolver pathResolver, ObjectMapper objectMapper) {
+        this.pathResolver = pathResolver;
+        this.objectMapper = objectMapper;
     }
 
-    public UserResponse save(User user) {
+    public User save(User user) {
         createFolder(pathResolver.getDirectoryPath());
         createBlankFile(pathResolver.getFilePath());
         modifyFile(pathResolver.getFilePath(), user);
-        return new UserResponse(user.username(), user.uuid().toString());
+        return User.create(user.username(), user.uuid());
     }
 
-    public List <UserResponse> read() {
-        if( fileOrDirectoryNotExists(pathResolver.getFilePath())){
+    public List <User> read() {
+        if( fileOrDirectoryNotExists(pathResolver.getFilePath()) ) {
             return null;
         } else {
             return extractUsersFromData();
         }
     }
 
-    private List <UserResponse> extractUsersFromData() {
+    private List <User> extractUsersFromData() {
 
         try {
             return objectMapper.readValue(new File(pathResolver.getFilePath().toUri()),
-                                          new TypeReference<List<UserResponse>>() {});
+                                          new TypeReference <List <User>>() {
+                                          });
         } catch( IOException e ) {
             throw new RuntimeException(e);
         }
@@ -60,14 +61,14 @@ public class FileHandler {
 
     public void createFolder(Path dirPath) {
 
-        if( fileOrDirectoryNotExists(dirPath)){
+        if( fileOrDirectoryNotExists(dirPath) ) {
             createFolderOrLaunchException(dirPath);
         }
     }
 
     public void createBlankFile(Path filePath) {
 
-        if( fileOrDirectoryNotExists(filePath)){
+        if( fileOrDirectoryNotExists(filePath) ) {
             createFileOrLaunchException(filePath, BLANK_FILE_CONTENT);
         }
     }
@@ -77,11 +78,11 @@ public class FileHandler {
         try {
             String fileContent = Files.readString(path);
             String newUser = USER_BLANK.formatted(user.username(), user.uuid().toString());
-            int endFileIndex = fileContent.lastIndexOf("]")-1;
+            int endFileIndex = fileContent.lastIndexOf("]") - 1;
             boolean alreadyHasUser = fileContent.contains("username");
-            String prefix = alreadyHasUser? ",\n" : "\n";
+            String prefix = alreadyHasUser ? ",\n" : "\n";
             String newContent = fileContent.substring(0, endFileIndex)
-                                                   +prefix +newUser +"\n]";
+                                + prefix + newUser + "\n]";
             Files.writeString(path, newContent);
             System.out.println(newContent);
         } catch( IOException e ) {
@@ -98,7 +99,7 @@ public class FileHandler {
         }
     }
 
-    public static void createFolderOrLaunchException(Path dirPath){
+    public static void createFolderOrLaunchException(Path dirPath) {
 
         try {
             Files.createDirectories(dirPath);
@@ -107,7 +108,7 @@ public class FileHandler {
         }
     }
 
-    public void createFileOrLaunchException(Path filePath, String content){
+    public void createFileOrLaunchException(Path filePath, String content) {
 
         try {
             Files.createFile(filePath);
@@ -117,7 +118,7 @@ public class FileHandler {
         }
     }
 
-    public static boolean fileOrDirectoryNotExists(Path dirPath){
+    public static boolean fileOrDirectoryNotExists(Path dirPath) {
         return !Files.exists(dirPath);
     }
 

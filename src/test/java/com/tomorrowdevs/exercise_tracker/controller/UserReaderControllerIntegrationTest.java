@@ -1,7 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
 import com.tomorrowdevs.exercise_tracker.users.error.ApiError;
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,8 +32,8 @@ class UserReaderControllerIntegrationTest {
         HttpEntity <String> requestEntity = buildRequest();
 
         // Act
-        ResponseEntity <List<UserResponse>> createdUserResponse = triggerUsersRequest(requestEntity);
-        List<UserResponse> createdUserDetails = createdUserResponse.getBody();
+        ResponseEntity <List<UserJpaEntity>> createdUserResponse = triggerUsersRequest(requestEntity);
+        List<UserJpaEntity> createdUserDetails = createdUserResponse.getBody();
 
         // Assert
         assertEquals(HttpStatus.OK, createdUserResponse.getStatusCode());
@@ -67,12 +67,12 @@ class UserReaderControllerIntegrationTest {
     }
 
 
-    public ResponseEntity<List<UserResponse>> triggerUsersRequest(HttpEntity <String> requestEntity){
+    public ResponseEntity<List<UserJpaEntity>> triggerUsersRequest(HttpEntity <String> requestEntity){
         return testRestTemplate
                 .exchange("/api/users",
                           HttpMethod.GET,
                           requestEntity,
-                          new ParameterizedTypeReference<List<UserResponse>>() {
+                          new ParameterizedTypeReference<List<UserJpaEntity>>() {
                           });
     }
 

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+
 public class ApiError {
 
     private LocalDateTime timestamp;
@@ -19,7 +20,8 @@ public class ApiError {
     }
 
     //jackson requested constructor
-    public ApiError() { }
+    public ApiError() {
+    }
 
     public ApiError(LocalDateTime timestamp, int status, String error, String path) {
         this.timestamp = timestamp;
@@ -46,22 +48,18 @@ public class ApiError {
 
     //jackson requested setters
     public void setTimestamp(LocalDateTime timestamp) {
-
         this.timestamp = timestamp;
     }
 
     public void setStatus(int status) {
-
         this.status = status;
     }
 
     public void setError(String error) {
-
         this.error = error;
     }
 
     public void setPath(String path) {
-
         this.path = path;
     }
 

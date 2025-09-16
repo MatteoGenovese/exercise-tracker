@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.controller;
 
-import com.tomorrowdevs.exercise_tracker.users.model.api.UserResponse;
+import com.tomorrowdevs.exercise_tracker.users.model.api.UserJpaEntity;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,8 @@ class UserWriterControllerV1IntegrationTest {
         HttpEntity <String> requestEntity = buildRequest(userRequestJson);
 
         // Act
-        ResponseEntity <UserResponse> createdUserResponse = triggerRequest(requestEntity);
-        UserResponse createdUserDetails = createdUserResponse.getBody();
+        ResponseEntity <UserJpaEntity> createdUserResponse = triggerRequest(requestEntity);
+        UserJpaEntity createdUserDetails = createdUserResponse.getBody();
 
         // Assert
         assertEquals(HttpStatus.OK, createdUserResponse.getStatusCode());
@@ -52,7 +52,7 @@ class UserWriterControllerV1IntegrationTest {
         HttpEntity <String> requestEntity = buildRequest(userRequestJson);
 
         // Act
-        ResponseEntity <UserResponse> createdUserResponse = triggerRequest(requestEntity);
+        ResponseEntity <UserJpaEntity> createdUserResponse = triggerRequest(requestEntity);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, createdUserResponse.getStatusCode());
@@ -70,10 +70,10 @@ class UserWriterControllerV1IntegrationTest {
     }
 
 
-    public ResponseEntity<UserResponse> triggerRequest(HttpEntity <String> requestEntity){
+    public ResponseEntity<UserJpaEntity> triggerRequest(HttpEntity <String> requestEntity){
         return testRestTemplate
                 .postForEntity("/api/users",
                                requestEntity,
-                               UserResponse.class);
+                               UserJpaEntity.class);
     }
 }
