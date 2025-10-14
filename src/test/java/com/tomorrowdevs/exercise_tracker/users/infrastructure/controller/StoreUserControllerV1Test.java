@@ -3,7 +3,7 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 import com.tomorrowdevs.exercise_tracker.users.application.service.UserWriter;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Username;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserRequest;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserCreationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class StoreUserControllerV1Test {
         // Act
         when(userWriter.save(Mockito.any(User.class))).thenReturn(user);
         ResponseEntity <User>
-                user1 = storeUserControllerV1.storeNewUserV1(new UserRequest(new Username("username1")));
+                user1 = storeUserControllerV1.storeNewUserV1(new UserCreationRequest(new Username("username1")));
 
         // Assert
         verify(userWriter).save(Mockito.any(User.class));

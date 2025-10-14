@@ -1,5 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 
+import com.tomorrowdevs.exercise_tracker.users.application.service.UserReader;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.response.UserResponse;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.UserReaderImpl;
@@ -17,11 +18,11 @@ import java.util.List;
 public class GetUserControllerV1 {
 
     @Autowired
-    UserReaderImpl userReaderImpl;
+    UserReader userReader;
 
     @GetMapping
     public ResponseEntity <List <UserResponse>> getUserListV1() {
-        return ResponseEntity.ok(mapResponse(userReaderImpl.read()));
+        return ResponseEntity.ok(mapResponse(userReader.read()));
     }
 
     private List <UserResponse> mapResponse(List <User> userList) {

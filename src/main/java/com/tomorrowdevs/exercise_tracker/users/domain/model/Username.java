@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 public class Username {
-    private String value;
+    private final String value;
 
     public Username(String value) {
         this.value = assertUsernameIsValid(value);
@@ -17,8 +17,13 @@ public class Username {
 
         if (trimmedValue.length() < 8) throw InvalidUsername.tooShort();
         if (trimmedValue.length() > 25) throw InvalidUsername.tooLong();
+        if (trimmedValue.contains(" ")) throw InvalidUsername.cannotHaveAnySpaces();
 
         return trimmedValue;
+    }
+
+    public static Username create(String value){
+        return new Username(value);
     }
 
     public String getValue() {

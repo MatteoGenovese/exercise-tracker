@@ -1,6 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.service;
 
 import com.tomorrowdevs.exercise_tracker.users.application.repository.UserRepository;
+import com.tomorrowdevs.exercise_tracker.users.application.service.UserReader;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.DataNotFoundError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserReaderImpl {
+public class UserReaderImpl implements UserReader {
     private final UserRepository userRepository;
 
     @Autowired

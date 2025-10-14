@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Repository
@@ -23,6 +24,14 @@ public class FileUserRepository implements UserRepository {
 
     @Override public User save(User user) {
         return fileHandler.save(user);
+    }
+
+    @Override public User findUserByUuid(String uuid) {
+        return null;
+    }
+
+    @Override public User editUserByUuid(User user) {
+        return null;
     }
 
 }

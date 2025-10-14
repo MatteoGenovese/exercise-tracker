@@ -9,4 +9,8 @@ public interface UserRepository {
     List <User> read();
 
     User save(User user);
+
+    User findUserByUuid(String uuid);
+
+    User editUserByUuid(User user);
 }

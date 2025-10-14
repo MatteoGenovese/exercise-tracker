@@ -2,7 +2,7 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.file;
 
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Username;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserRequest;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserCreationRequest;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.utils.FileHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -31,15 +29,15 @@ class FileUserRepositoryTest {
     void saveUser() {
 
         // Arrange
-        UserRequest userRequest = new UserRequest(new Username("Username"));
-        User user = User.create(userRequest.getUsername().getValue());
+        UserCreationRequest userCreationRequest = new UserCreationRequest(new Username("Username"));
+        User user = User.create(userCreationRequest.getUsername().getValue());
 
         // Act
         Mockito.when(fileHandler.save(Mockito.any(User.class))).thenReturn(user);
         User response = fileUserRepository.save(user);
 
         // Assert
-        Assertions.assertEquals(response.username().getValue(), userRequest.getUsername().getValue());
+        Assertions.assertEquals(response.username().getValue(), userCreationRequest.getUsername().getValue());
         Mockito.verify(fileHandler).save(Mockito.any());
     }
 

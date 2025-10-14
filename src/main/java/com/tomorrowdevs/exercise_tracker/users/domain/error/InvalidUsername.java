@@ -12,4 +12,8 @@ public class InvalidUsername extends InvalidData {
     public static InvalidUsername tooLong() {
         return new InvalidUsername("Username too long");
     }
+
+    public static InvalidUsername cannotHaveAnySpaces() {
+        return new InvalidUsername("Username cannot have any spaces");
+    }
 }

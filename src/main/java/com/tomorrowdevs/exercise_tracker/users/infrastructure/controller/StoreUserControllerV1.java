@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserRequest;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserCreationRequest;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.application.service.UserWriter;
 import jakarta.validation.Valid;
@@ -23,9 +23,9 @@ public class StoreUserControllerV1 {
     public ResponseEntity <User> storeNewUserV1(
             @RequestBody
             @Valid
-            UserRequest userRequest) {
+            UserCreationRequest userCreationRequest) {
 
-        User newUser = User.create(userRequest.getUsername().getValue());
+        User newUser = User.create(userCreationRequest.getUsername().getValue());
         return ResponseEntity.ok(userWriter.save(newUser));
     }
 
