@@ -5,6 +5,6 @@ import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 
 public interface UserWriter {
 
-    public User save(User user);
+    User save(User user);
 
 }

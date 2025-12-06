@@ -1,5 +1,17 @@
 Feature: Edit User
+
   Scenario: Edit a new user Successfully
-    Given I want to modify an user with uuid "4b05c31e-ceb7-4c9a-b5b9-703e74fbdf1e" with name "matteo.genovese.91" a new name "matteo.genovese.92"
+    Given the following ChangeUsernameRequest:
+      |oldUsername| oldUsername                                     |
+      |uuid       | e2f536cb-e6a3-497c-a60c-c1a68a2c5bc5            |
+      |username   | matteo.genovese.91                              |
     When I edit the username
-    And The user is edited and can be found into the system
+    Then The user is edited and can be found into the system
+
+  Scenario: Can't edit user
+    Given a non present user in the database
+      |oldUsername| oldUsername                                     |
+      |uuid       | 8b9f5f7c-3e2d-4c9b-8f6a-0a72e0e3a5c9            |
+      |username   | matteo.nuovoutente                              |
+    When I edit a non present username
+    Then An error is throw with message "UUID not found"

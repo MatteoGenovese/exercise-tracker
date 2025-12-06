@@ -37,29 +37,29 @@ public class ApiError {
         return timestamp;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
     //jackson requested setters
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
     }
 
+    public String getError() {
+        return error;
+    }
+
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public void setPath(String path) {
@@ -73,4 +73,5 @@ public class ApiError {
     public void setParent(String localizedMessage) {
         this.localizedMessage = localizedMessage;
     }
+
 }

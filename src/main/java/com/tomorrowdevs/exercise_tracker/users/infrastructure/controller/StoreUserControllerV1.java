@@ -1,8 +1,8 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserCreationRequest;
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.application.service.UserWriter;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.UserCreationRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,11 @@ public class StoreUserControllerV1 {
     UserWriter userWriter;
 
     @PostMapping()
-    public ResponseEntity <User> storeNewUserV1(
+    public ResponseEntity<User> storeNewUserV1(
             @RequestBody
             @Valid
-            UserCreationRequest userCreationRequest) {
-
+            UserCreationRequest userCreationRequest
+    ) {
         User newUser = User.create(userCreationRequest.getUsername().getValue());
         return ResponseEntity.ok(userWriter.save(newUser));
     }

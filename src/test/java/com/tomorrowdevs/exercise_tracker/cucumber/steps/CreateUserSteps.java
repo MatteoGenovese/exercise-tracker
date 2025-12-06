@@ -12,7 +12,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
 
 
 public class CreateUserSteps extends SpringIntegrationTest {
@@ -21,9 +20,7 @@ public class CreateUserSteps extends SpringIntegrationTest {
     private UserCreationRequest userCreationRequest2;
     private User user;
     private User saved;
-    private String notAllowedUsername;
-
-    private ResultActions resultActions;
+    private InvalidUsername invalidUsername;
 
 
     private UserWriter userWriter;
@@ -41,30 +38,34 @@ public class CreateUserSteps extends SpringIntegrationTest {
         user = User.create(userCreationRequest.getUsername().getValue());
     }
 
+
+    @Given("A request for a new user:")
+    public void aRequestForANewUser() {
+
+    }
+
     @When("I save the user")
     public void iSaveTheUser() {
         saved = userWriter.save(user);
-
     }
 
     @Then("the User can be found into the system")
     public void theUserCanBeFoundIntoTheSystem() {
-        User userById = userRepository.findUserByUuid(saved.uuid().toString());
+        User userById = userRepository.findUserByUuid(saved.uuid());
         Assertions.assertEquals(userById.username().getValue(), user.username().getValue());
     }
 
     @Given("A request for a new user with username length < of eight character {string}")
     public void aRequestForANewUserWithUsernameLengthOfEightCharacter(String usernameAsString) {
-        notAllowedUsername = usernameAsString;
+        invalidUsername = Assertions.assertThrows(
+                InvalidUsername.class,
+                ()-> new UserCreationRequest(new Username(usernameAsString))
+        );
     }
 
-
-    @Then("An error should appear")
-    public void anErrorShouldAppear() {
-        Assertions.assertThrows(
-                InvalidUsername.class,
-                ()-> new UserCreationRequest(new Username(notAllowedUsername))
-        );
+    @Then("An error should appear {string}")
+    public void anErrorShouldAppear(String expectedErrorMessage) {
+        Assertions.assertEquals(expectedErrorMessage, invalidUsername.getMessage());
     }
 
 }

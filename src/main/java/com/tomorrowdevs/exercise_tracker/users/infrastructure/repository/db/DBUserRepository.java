@@ -1,9 +1,9 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.db;
 
 import com.tomorrowdevs.exercise_tracker.users.application.repository.UserRepository;
-import com.tomorrowdevs.exercise_tracker.users.domain.error.UsernameNotFound;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.UserNotFound;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.jpa.UserJpaEntity;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.jpa.UserEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,42 +20,45 @@ public class DBUserRepository implements UserRepository {
     @Autowired
     private UserJpaRepository userJpaRepository;
 
-    public List <User> read() {
-        List <UserJpaEntity> userList = userJpaRepository.findAll();
+    public List<User> read() {
+        List<UserEntity> userList = userJpaRepository.findAll();
         return toDomain(userList);
     }
 
-    public User save(User user) {
-        UserJpaEntity saved = userJpaRepository.save(UserJpaEntity.create(user.username().getValue(),
-                                                                          user.uuid().toString()));
-        return toDomain(saved);
+    public void save(User user) {
+        userJpaRepository.save(UserEntity.create(
+                user.username().getValue(),
+                user.uuid()
+        ));
     }
 
-    @Override public User findUserByUuid(String uuid) {
-        UserJpaEntity memorized = userJpaRepository.findByUuid(uuid).orElseThrow(UsernameNotFound::uuidNotFound);
+    @Override
+    public User findUserByUuid(UUID uuid) {
+        UserEntity memorized = userJpaRepository.findByUuid(uuid).orElseThrow(UserNotFound::uuidNotFound);
         return toDomain(memorized);
     }
 
     @Transactional
-    @Override public User editUserByUuid(User user) {
-        UserJpaEntity userJpaEntity = userJpaRepository.findByUuid(user.uuid().toString())
-                                                       .orElseThrow(UsernameNotFound::uuidNotFound);
-        userJpaEntity.setUsername(user.username().getValue());
-        UserJpaEntity saved = userJpaRepository.save(userJpaEntity);
+    @Override
+    public User editUserByUuid(User user) {
+        UserEntity userEntity = userJpaRepository.findByUuid(user.uuid()).orElseThrow(UserNotFound::uuidNotFound);
+
+        userEntity.setUsername(user.username().getValue());
+        UserEntity saved = userJpaRepository.save(userEntity);
         return toDomain(saved);
     }
 
-    private List <User> toDomain(List <UserJpaEntity> userJpaEntities) {
-        return userJpaEntities
-                .stream()
-                .map(userResponse -> User.create(
-                        UUID.fromString(userResponse.getUuid()),
-                        userResponse.getUsername()
-                        ))
-                .toList();
+    private List<User> toDomain(List<UserEntity> userJpaEntities) {
+        return userJpaEntities.stream().map(userResponse -> User.create(
+                userResponse.getUuid(),
+                userResponse.getUsername()
+        )).toList();
     }
 
-    private User toDomain(UserJpaEntity userJpaEntity) {
-        return User.create( UUID.fromString(userJpaEntity.getUuid()), userJpaEntity.getUsername());
+    private User toDomain(UserEntity userEntity) {
+        return User.create(
+                userEntity.getUuid(),
+                userEntity.getUsername()
+        );
     }
 }

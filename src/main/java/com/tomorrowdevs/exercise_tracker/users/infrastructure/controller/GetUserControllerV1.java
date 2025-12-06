@@ -3,7 +3,6 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 import com.tomorrowdevs.exercise_tracker.users.application.service.UserReader;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.response.UserResponse;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.UserReaderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +20,17 @@ public class GetUserControllerV1 {
     UserReader userReader;
 
     @GetMapping
-    public ResponseEntity <List <UserResponse>> getUserListV1() {
+    public ResponseEntity<List<UserResponse>> getUserListV1() {
         return ResponseEntity.ok(mapResponse(userReader.read()));
     }
 
-    private List <UserResponse> mapResponse(List <User> userList) {
+    private List<UserResponse> mapResponse(List<User> userList) {
         return userList.stream()
-                       .map(user -> UserResponse.create(
-                               user.username(),
-                               user.uuid().toString()))
-                       .toList();
+                .map(user -> UserResponse.create(
+                        user.username(),
+                        user.uuid().toString()
+                ))
+                .toList();
     }
 
 }

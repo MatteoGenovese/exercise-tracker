@@ -6,7 +6,10 @@ import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -17,10 +20,11 @@ public class ChangeUsernameController {
     UserEditor userEditor;
 
     @PutMapping()
-    public ResponseEntity <User> changeUserUsernameV1(
+    public ResponseEntity<User> changeUserUsernameV1(
             @RequestBody
             @Valid
-            ChangeUsernameRequest userRequest) {
+            ChangeUsernameRequest userRequest
+    ) {
 
         User newUser = User.create(userRequest.getUsername().getValue());
         return ResponseEntity.ok(userEditor.edit(newUser));

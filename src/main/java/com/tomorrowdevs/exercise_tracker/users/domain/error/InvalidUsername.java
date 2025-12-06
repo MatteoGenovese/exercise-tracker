@@ -1,6 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.users.domain.error;
 
 public class InvalidUsername extends InvalidData {
+
     private InvalidUsername(String message) {
         super(message);
     }
@@ -16,4 +17,5 @@ public class InvalidUsername extends InvalidData {
     public static InvalidUsername cannotHaveAnySpaces() {
         return new InvalidUsername("Username cannot have any spaces");
     }
+
 }

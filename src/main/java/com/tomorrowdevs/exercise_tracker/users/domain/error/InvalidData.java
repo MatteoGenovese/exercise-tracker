@@ -5,4 +5,5 @@ public abstract class InvalidData extends DomainError {
     public InvalidData(String message) {
         super(message);
     }
+
 }

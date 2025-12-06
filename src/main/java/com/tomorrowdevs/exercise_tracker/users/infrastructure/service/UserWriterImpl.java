@@ -19,11 +19,12 @@ public class UserWriterImpl implements UserWriter {
     }
 
     public User save(User user) {
-        return storeUserInDbOrFile(user);
+        storeUserInDbOrFile(user);
+        return user;
     }
 
-    private User storeUserInDbOrFile(User user) {
-        return userRepository.save(user);
+    private void storeUserInDbOrFile(User user) {
+        userRepository.save(user);
     }
 
 }

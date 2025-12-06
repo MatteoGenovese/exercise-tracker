@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface UserReader {
 
-    public List <User> read();
+    List <User> read();
 
 }

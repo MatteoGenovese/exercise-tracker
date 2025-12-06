@@ -39,7 +39,7 @@ class UserWriterImplTest {
         User user1 = new User(UUID.randomUUID(), new Username("testtest1"));
 
         // Act
-        when(userRepository.save(any(User.class))).thenReturn(user1);
+//        when(userRepository.save(any(User.class)));
         User response = userWriter.save(user1);
 
 

@@ -2,6 +2,7 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.service;
 
 import com.tomorrowdevs.exercise_tracker.users.application.repository.UserRepository;
 import com.tomorrowdevs.exercise_tracker.users.application.service.UserReader;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.UserEmptyList;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.DataNotFoundError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UserReaderImpl implements UserReader {
 
     private void ifListIsEmptyThrowError(List <User> users) throws DataNotFoundError {
         if( users.isEmpty() ) {
-            throw new DataNotFoundError("Data not found", new Throwable("Data not found"));
+            throw new UserEmptyList("Data not found");
         }
     }
 }

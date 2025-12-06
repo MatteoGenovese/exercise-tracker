@@ -2,6 +2,7 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.error.handler;
 
 import com.tomorrowdevs.exercise_tracker.users.domain.error.InvalidData;
 import com.tomorrowdevs.exercise_tracker.users.domain.error.InvalidUsername;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.UserEmptyList;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.*;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.model.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +17,10 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(InvalidUsername.class)
-    public ResponseEntity <ApiError> handleInvalidUsername(InvalidUsername ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleInvalidUsername(
+            InvalidUsername ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
@@ -28,7 +31,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidData.class)
-    public ResponseEntity <ApiError> handleInvalidData(InvalidData ex, HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleInvalidData(
+            InvalidData ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
@@ -39,8 +45,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataNotFoundError.class)
-    public ResponseEntity <ApiError> handleDataNotFound(DataNotFoundError ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleDataNotFound(
+            DataNotFoundError ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -51,8 +59,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DirectoryNotFoundError.class)
-    public ResponseEntity <ApiError> handleDirectoryNotCreatedException(DirectoryNotFoundError ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleDirectoryNotCreatedException(
+            DirectoryNotFoundError ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -63,8 +73,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileNotFoundError.class)
-    public ResponseEntity <ApiError> handleFileNotCreatedException(FileNotFoundError ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleFileNotCreatedException(
+            FileNotFoundError ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -75,8 +87,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnableToExtractDataError.class)
-    public ResponseEntity <ApiError> handleUnableToExtractDataException(UnableToExtractDataError ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleUnableToExtractDataException(
+            UnableToExtractDataError ex,
+            HttpServletRequest request
+    ) {
+        ApiError apiError = new ApiError(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage(),
+                request.getRequestURI(),
+                ex.getLocalizedMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
+    @ExceptionHandler(UserEmptyList.class)
+    public ResponseEntity<ApiError> handleUserEmptyListException(
+            UserEmptyList ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -87,8 +115,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnableToWriteOnFileError.class)
-    public ResponseEntity <ApiError> handleUnableToWriteOnFileException(UnableToWriteOnFileError ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleUnableToWriteOnFileException(
+            UnableToWriteOnFileError ex,
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -99,9 +129,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnableToCreateDirectoryError.class)
-    public ResponseEntity <ApiError> handleUnableToCreateDirectoryException(
+    public ResponseEntity<ApiError> handleUnableToCreateDirectoryException(
             UnableToCreateDirectoryError ex,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         ApiError apiError = new ApiError(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
@@ -110,4 +141,5 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
+
 }

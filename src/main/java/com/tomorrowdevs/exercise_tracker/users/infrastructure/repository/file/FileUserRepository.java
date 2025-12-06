@@ -22,11 +22,11 @@ public class FileUserRepository implements UserRepository {
         return fileHandler.read();
     }
 
-    @Override public User save(User user) {
-        return fileHandler.save(user);
+    @Override public void save(User user) {
+        fileHandler.save(user);
     }
 
-    @Override public User findUserByUuid(String uuid) {
+    @Override public User findUserByUuid(UUID uuid) {
         return null;
     }
 

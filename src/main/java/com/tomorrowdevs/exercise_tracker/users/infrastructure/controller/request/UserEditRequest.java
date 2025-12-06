@@ -10,7 +10,10 @@ public class UserEditRequest {
     private UUID uuid;
     private Username username;
 
-    public UserEditRequest(UUID uuid, Username username) {
+    public UserEditRequest(
+            UUID uuid,
+            Username username
+    ) {
         this.uuid = uuid;
         this.username = username;
     }
@@ -25,4 +28,5 @@ public class UserEditRequest {
     public Username getUsername() {
         return username;
     }
+
 }
