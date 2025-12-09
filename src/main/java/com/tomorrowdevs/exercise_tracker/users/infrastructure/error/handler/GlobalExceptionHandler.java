@@ -2,7 +2,7 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.error.handler;
 
 import com.tomorrowdevs.exercise_tracker.users.domain.error.InvalidData;
 import com.tomorrowdevs.exercise_tracker.users.domain.error.InvalidUsername;
-import com.tomorrowdevs.exercise_tracker.users.domain.error.UserEmptyList;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentEmptyList;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.*;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.model.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -100,9 +100,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
-    @ExceptionHandler(UserEmptyList.class)
+    @ExceptionHandler(StudentEmptyList.class)
     public ResponseEntity<ApiError> handleUserEmptyListException(
-            UserEmptyList ex,
+            StudentEmptyList ex,
             HttpServletRequest request
     ) {
         ApiError apiError = new ApiError(

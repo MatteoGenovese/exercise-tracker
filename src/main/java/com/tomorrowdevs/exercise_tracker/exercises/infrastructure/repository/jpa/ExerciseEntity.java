@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.exercises.infrastructure.repository.jpa;
 
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.jpa.UserEntity;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.jpa.StudentEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,8 +15,8 @@ public class ExerciseEntity {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "student_id")
+    private StudentEntity student;
 
     private LocalDateTime dateTime;
 
@@ -28,12 +28,12 @@ public class ExerciseEntity {
     }
 
     public ExerciseEntity(
-            UserEntity user,
+            StudentEntity student,
             LocalDateTime dateTime,
             String description,
             Integer duration
     ) {
-        this.user = user;
+        this.student = student;
         this.dateTime = dateTime;
         this.description = description;
         this.duration = duration;
@@ -47,12 +47,12 @@ public class ExerciseEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public StudentEntity getStudent() {
+        return student;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setStudent(StudentEntity student) {
+        this.student = student;
     }
 
     public LocalDateTime getDateTime() {

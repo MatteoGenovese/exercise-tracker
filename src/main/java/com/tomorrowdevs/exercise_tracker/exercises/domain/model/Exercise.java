@@ -1,11 +1,14 @@
 package com.tomorrowdevs.exercise_tracker.exercises.domain.model;
 
+import com.tomorrowdevs.exercise_tracker.common.domain.entity.Entity;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 
-public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription description, TimeDuration duration, UUID studentUuid) {
+public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription description,
+                       TimeDuration duration, UUID studentUuid) implements Entity {
 
     public static Exercise create(
             LocalDateTime date,
@@ -13,7 +16,13 @@ public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription de
             TimeDuration duration,
             UUID studentUuid
     ) {
-        return validate(UUID.randomUUID(),date,description,duration,studentUuid);
+        return validate(
+                UUID.randomUUID(),
+                date,
+                description,
+                duration,
+                studentUuid
+        );
     }
 
 
@@ -24,7 +33,13 @@ public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription de
             TimeDuration duration,
             UUID studentUuid
     ) {
-        return validate(uuid,date,description,duration,studentUuid);
+        return validate(
+                uuid,
+                date,
+                description,
+                duration,
+                studentUuid
+        );
     }
 
     private static Exercise validate(
@@ -33,7 +48,7 @@ public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription de
             ExerciseDescription description,
             TimeDuration duration,
             UUID studentUuid
-    ){
+    ) {
 
         if (date == null) {
             date = LocalDateTime.now();
@@ -50,7 +65,10 @@ public record Exercise(UUID uuid, LocalDateTime dateTime, ExerciseDescription de
 
 
     public boolean equals(Exercise exercise) {
-        return Objects.equals(uuid, exercise.uuid);
+        return Objects.equals(
+                uuid,
+                exercise.uuid
+        );
     }
 
 }

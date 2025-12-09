@@ -1,7 +1,7 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.controller;
 
-import com.tomorrowdevs.exercise_tracker.users.application.service.UserEditor;
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
+import com.tomorrowdevs.exercise_tracker.users.application.service.StudentEditor;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.controller.request.ChangeUsernameRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/students")
 public class ChangeUsernameController {
 
     @Autowired
-    UserEditor userEditor;
+    StudentEditor studentEditor;
 
     @PutMapping()
-    public ResponseEntity<User> changeUserUsernameV1(
+    public ResponseEntity<Student> changeStudentUsernameV1(
             @RequestBody
             @Valid
-            ChangeUsernameRequest userRequest
+            ChangeUsernameRequest changeUsernameRequest
     ) {
 
-        User newUser = User.create(userRequest.getUsername().getValue());
-        return ResponseEntity.ok(userEditor.edit(newUser));
+        Student newStudent = Student.create(changeUsernameRequest.getUsername().getValue());
+        return ResponseEntity.ok(studentEditor.edit(newStudent));
     }
 
 }

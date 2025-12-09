@@ -4,9 +4,9 @@ package com.tomorrowdevs.exercise_tracker.exercises.infrastructure.service;
 import com.tomorrowdevs.exercise_tracker.exercises.application.repository.ExerciseRepository;
 import com.tomorrowdevs.exercise_tracker.exercises.application.service.ExerciseTracker;
 import com.tomorrowdevs.exercise_tracker.exercises.domain.model.Exercise;
-import com.tomorrowdevs.exercise_tracker.users.application.repository.UserRepository;
-import com.tomorrowdevs.exercise_tracker.users.domain.error.UserNotFound;
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
+import com.tomorrowdevs.exercise_tracker.users.application.repository.StudentRepository;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentNotFound;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +18,14 @@ import java.util.UUID;
 public class ExerciseTrackerImpl implements ExerciseTracker {
 
     ExerciseRepository exerciseRepository;
-    UserRepository userRepository;
+    StudentRepository studentRepository;
 
     public ExerciseTrackerImpl(
             ExerciseRepository exerciseRepository,
-            UserRepository userRepository
+            StudentRepository studentRepository
     ) {
         this.exerciseRepository = exerciseRepository;
-        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -33,10 +33,10 @@ public class ExerciseTrackerImpl implements ExerciseTracker {
     public Exercise saveExerciseTrack(Exercise exerciseTrack) {
 
         LocalDateTime dateTime;
-        User user = userRepository.findUserByUuid(exerciseTrack.studentUuid());
+        Student student = studentRepository.findUserByUuid(exerciseTrack.studentUuid());
 
-        if (user == null) {
-            throw UserNotFound.uuidNotFound();
+        if (student == null) {
+            throw StudentNotFound.uuidNotFound();
         }
 
         if (exerciseTrack.dateTime() == null) {
@@ -50,7 +50,7 @@ public class ExerciseTrackerImpl implements ExerciseTracker {
                 dateTime,
                 exerciseTrack.description(),
                 exerciseTrack.duration(),
-                user.uuid()
+                student.uuid()
         );
         exerciseRepository.save(exercise);
 

@@ -1,6 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.utils;
 
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,26 +72,26 @@ class FileHandlerTest {
 
 
     @Test
-    @DisplayName("Should Save a new User")
+    @DisplayName("Should Save a new Student")
     @Order(3)
-    void saveUser_whenUserDetailsProvided_thenShouldWriteUserInTheFile() {
+    void saveStudent_whenStudentDetailsProvided_thenShouldWriteStudentInTheFile() {
         // Arrange
-        User user = User.create("username");
+        Student student = Student.create("username");
 
         // Act
-        User response = fileHandler.save(user);
+        Student response = fileHandler.save(student);
 
         // Assert
-        assertEquals(response.username().getValue(), user.username().getValue());
-        assertEquals(response.uuid().toString(), user.uuid().toString());
+        assertEquals(response.username().getValue(), student.username().getValue());
+        assertEquals(response.uuid().toString(), student.uuid().toString());
     }
 
     @Test
-    @DisplayName("Should read all the users")
+    @DisplayName("Should read all the students")
     @Order(4)
-    void readUsers_whenUsersAreCollected_thenShouldReturnUserList() {
+    void readStudents_whenStudentsAreCollected_thenShouldReturnStudentList() {
         // Act
-        List <User> responseList = fileHandler.read();
+        List <Student> responseList = fileHandler.read();
 
         // Assert
         Assertions.assertEquals("username", responseList.getFirst().username().getValue());

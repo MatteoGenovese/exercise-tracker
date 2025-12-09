@@ -7,13 +7,13 @@ import com.tomorrowdevs.exercise_tracker.exercises.domain.model.Exercise;
 import com.tomorrowdevs.exercise_tracker.exercises.domain.model.ExerciseDescription;
 import com.tomorrowdevs.exercise_tracker.exercises.domain.model.TimeDuration;
 import com.tomorrowdevs.exercise_tracker.exercises.infrastructure.service.ExerciseTrackerImpl;
-import com.tomorrowdevs.exercise_tracker.users.application.repository.InMemoryUserRepository;
-import com.tomorrowdevs.exercise_tracker.users.application.repository.UserRepository;
-import com.tomorrowdevs.exercise_tracker.users.application.service.UserWriter;
-import com.tomorrowdevs.exercise_tracker.users.domain.error.UserNotFound;
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
+import com.tomorrowdevs.exercise_tracker.users.application.repository.InMemoryStudentRepository;
+import com.tomorrowdevs.exercise_tracker.users.application.repository.StudentRepository;
+import com.tomorrowdevs.exercise_tracker.users.application.service.StudentWriter;
+import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentNotFound;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Username;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.UserWriterImpl;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.StudentWriterImpl;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -31,49 +31,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateExerciseSteps {
 
-    private UserWriter userWriter;
+    private StudentWriter studentWriter;
     private ExerciseTracker exerciseTracker;
-    private UserRepository userRepository;
+    private StudentRepository studentRepository;
     private ExerciseRepository exerciseRepository;
 
 
-    private User userInDb;
+    private Student studentInDb;
     private Exercise exerciseInDb;
     private UUID wrongUserId;
-    private User userNotPresent;
-    private User userSaved;
+    private Student studentNotPresent;
+    private Student studentSaved;
     private Exercise exerciseSaved;
-    private UserNotFound userNotFoundException;
+    private StudentNotFound studentNotFoundException;
 
 
-    public CreateExerciseSteps(
-            ExerciseTracker exerciseTracker,
-            ExerciseRepository exerciseRepository
-    ) {
+    public CreateExerciseSteps() {
 
-        this.userRepository = new InMemoryUserRepository();
-        this.userWriter = new UserWriterImpl(userRepository);
+        this.studentRepository = new InMemoryStudentRepository();
+        this.studentWriter = new StudentWriterImpl(studentRepository);
 
         this.exerciseRepository = new InMemoryExerciseRepository();
         this.exerciseTracker = new ExerciseTrackerImpl(
                 exerciseRepository,
-                userRepository
+                studentRepository
         );
     }
 
-    @Given("those users:")
-    public void thoseUsers(DataTable dataTable) {
-        List<Map<String, String>> users = dataTable.asMaps(
+    @Given("those students:")
+    public void thoseStudents(DataTable dataTable) {
+        List<Map<String, String>> students = dataTable.asMaps(
                 String.class,
                 String.class
         );
 
-        for (Map<String, String> user : users) {
+        for (Map<String, String> student : students) {
 
-            UUID uuid = UUID.fromString(user.get("uuid"));
-            Username username = Username.create(user.get("username"));
+            UUID uuid = UUID.fromString(student.get("uuid"));
+            Username username = Username.create(student.get("username"));
 
-            userRepository.save(User.create(
+            studentRepository.save(Student.create(
                     uuid,
                     username
             ));
@@ -108,19 +105,17 @@ public class CreateExerciseSteps {
 
             exerciseRepository.save(newExercise);
         }
-
-
     }
 
-    @Given("the user {string}")
-    public void theUser(String userUuid) {
-        userInDb = userRepository.findUserByUuid(UUID.fromString(userUuid));
-        assertNotNull(userInDb);
+    @Given("the student {string}")
+    public void theStudent(String studentUuid) {
+        studentInDb = studentRepository.findStudentByUuid(UUID.fromString(studentUuid));
+        assertNotNull(studentInDb);
     }
 
     @And("the exercise track {string}")
     public void theExerciseTrack(String exerciseUuid) {
-        exerciseInDb = exerciseRepository.find(UUID.fromString(exerciseUuid));
+        exerciseInDb = exerciseRepository.findByUuid(UUID.fromString(exerciseUuid));
         assertNotNull(exerciseInDb);
 
     }
@@ -130,8 +125,8 @@ public class CreateExerciseSteps {
         exerciseSaved = exerciseTracker.saveExerciseTrack(exerciseInDb);
     }
 
-    @Then("The exercise track is added and is linked with the user profile")
-    public void the_exercise_track_is_added_and_is_linked_with_the_user_profile() {
+    @Then("The exercise track is added and is linked with the student profile")
+    public void the_exercise_track_is_added_and_is_linked_with_the_student_profile() {
         assertEquals(
                 exerciseInDb.dateTime(),
                 exerciseSaved.dateTime()
@@ -150,11 +145,11 @@ public class CreateExerciseSteps {
         );
     }
 
-    @Given("the invalid user {string}")
-    public void theInvalidUser(String uuidAsString) {
-        wrongUserId = UUID.fromString(uuidAsString);
-        userNotPresent = userRepository.findUserByUuid(wrongUserId);
-        assertNull(userNotPresent);
+    @Given("the invalid student {string}")
+    public void theInvalidStudent(String uuidAsString) {
+        wrongStudentId = UUID.fromString(uuidAsString);
+        studentNotPresent = studentRepository.findStudentByUuid(wrongStudentId);
+        assertNull(studentNotPresent);
     }
 
     @When("I try to post the exercise track under the profile")
@@ -164,28 +159,28 @@ public class CreateExerciseSteps {
                 LocalDateTime.now(),
                 ExerciseDescription.create("a random description"),
                 TimeDuration.create(38),
-                wrongUserId
+                wrongStudentId
         );
 
-        userNotFoundException = assertThrows(
-                UserNotFound.class,
+        studentNotFoundException = assertThrows(
+                StudentNotFound.class,
                 () -> exerciseTracker.saveExerciseTrack(exercise)
         );
     }
 
     @Then("An error is thrown with message {string}")
-    public void anErrorIsThrownWithMessage(String userNotFoundMessage) {
-        Assertions.assertEquals(userNotFoundMessage, userNotFoundException.getMessage());
+    public void anErrorIsThrownWithMessage(String studentNotFoundMessage) {
+        Assertions.assertEquals(studentNotFoundMessage, studentNotFoundException.getMessage());
 
     }
 
-    //    @Given("a non Registered User with uuid {string} and a valid exercise track:")
-//    public void a_non_Registered_User_with_uuid_and_a_valid_exercise_track(String uuidAsString,
+    //    @Given("a non Registered Student with uuid {string} and a valid exercise track:")
+//    public void a_non_Registered_Student_with_uuid_and_a_valid_exercise_track(String uuidAsString,
 //            DataTable dataTable) {
 //        uuidNotPresentInDb = uuidAsString;
 //        Map<String, String> validExerciseData = dataTable.asMap(String.class, String.class);
 //
-//        notValidUserUuidInExerciseTrack = ExerciseTrack.create(
+//        notValidStudentUuidInExerciseTrack = ExerciseTrack.create(
 //                LocalDateTime.parse(validExerciseData.get("date")),
 //                ExerciseDescription.create(validExerciseData.get("description")),
 //                TimeDuration.create(validExerciseData.get("duration")),
@@ -196,7 +191,7 @@ public class CreateExerciseSteps {
 //
 //    @Then("An error is thrown with message {string}")
 //    public void an_error_is_thrown_with_message(String string) {
-//        Assertions.assertEquals("User not found", userNotFoundException.getMessage());
+//        Assertions.assertEquals("Student not found", studentNotFoundException.getMessage());
 //    }
 
 

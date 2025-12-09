@@ -2,11 +2,11 @@ package com.tomorrowdevs.exercise_tracker.users.infrastructure.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.FileNotFoundError;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.UnableToCreateDirectoryError;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.UnableToExtractDataError;
 import com.tomorrowdevs.exercise_tracker.users.infrastructure.error.UnableToWriteOnFileError;
-import com.tomorrowdevs.exercise_tracker.users.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class FileHandler {
     public static final String BLANK_FILE_CONTENT = """
             [ ]
             """;
-    public static final String USER_BLANK = """
+    public static final String STUDENT_BLANK = """
             \t{
             \t\t"username" : {
             \t\t\t\"value\": \"%s\"
@@ -39,22 +39,24 @@ public class FileHandler {
         this.objectMapper = objectMapper;
     }
 
-    public User save(User user) {
+    public Student save(Student student) {
         createFolder(pathResolver.getDirectoryPath());
         createBlankFile(pathResolver.getFilePath());
-        addNewUserOnFile(pathResolver.getFilePath(), user);
-        return User.create(user.uuid(), user.username().getValue());
+        addNewStudentOnFile(pathResolver.getFilePath(),
+                student
+        );
+        return Student.create(student.uuid(), student.username().getValue());
     }
 
-    public List <User> read() {
-        return extractUsersFromData();
+    public List <Student> read() {
+        return extractStudentsFromData();
     }
 
-    private List <User> extractUsersFromData() {
+    private List <Student> extractStudentsFromData() {
 
         try {
             return objectMapper.readValue(new File(pathResolver.getFilePath().toUri()),
-                                          new TypeReference <List <User>>() {
+                                          new TypeReference <List <Student>>() {
                                           });
         } catch( IOException e ) {
             throw new UnableToExtractDataError("Unable to extract data", e.fillInStackTrace());
@@ -75,16 +77,16 @@ public class FileHandler {
         }
     }
 
-    public void addNewUserOnFile(Path path, User user) {
+    public void addNewStudentOnFile(Path path, Student student) {
 
         try {
             String fileContent = Files.readString(path);
-            String newUser = USER_BLANK.formatted(user.username(), user.uuid().toString());
+            String newStudent = STUDENT_BLANK.formatted(student.username(), student.uuid().toString());
             int endFileIndex = fileContent.lastIndexOf("]") - 1;
-            boolean alreadyHasUser = fileContent.contains("username");
-            String prefix = alreadyHasUser ? ",\n" : "\n";
+            boolean alreadyHasStudent = fileContent.contains("username");
+            String prefix = alreadyHasStudent ? ",\n" : "\n";
             String newContent = fileContent.substring(0, endFileIndex)
-                                + prefix + newUser + "\n]";
+                                + prefix + newStudent + "\n]";
             Files.writeString(path, newContent);
             System.out.println(newContent);
         } catch( IOException e ) {
