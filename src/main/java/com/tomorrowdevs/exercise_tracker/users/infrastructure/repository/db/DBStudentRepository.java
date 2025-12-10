@@ -1,5 +1,6 @@
 package com.tomorrowdevs.exercise_tracker.users.infrastructure.repository.db;
 
+import com.tomorrowdevs.exercise_tracker.common.domain.EntityNotFound;
 import com.tomorrowdevs.exercise_tracker.users.application.repository.StudentRepository;
 import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentNotFound;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -33,19 +35,21 @@ public class DBStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Student findUserByUuid(UUID uuid) {
+    public Student findByUuid(UUID uuid) {
         StudentEntity memorized = studentJpaRepository.findByUuid(uuid).orElseThrow(StudentNotFound::uuidNotFound);
         return toDomain(memorized);
     }
 
     @Transactional
     @Override
-    public Student editUserByUuid(Student student) {
-        StudentEntity studentEntity = studentJpaRepository.findByUuid(student.uuid()).orElseThrow(StudentNotFound::uuidNotFound);
+    public void editByUuid(Student student) {
+        Optional<StudentEntity> studentEntity = studentJpaRepository.findByUuid(student.uuid());
 
-        studentEntity.setUsername(student.username().getValue());
-        StudentEntity saved = studentJpaRepository.save(studentEntity);
-        return toDomain(saved);
+        if (studentEntity.isEmpty()){
+            throw EntityNotFound.uuidNotFound(student);
+        }
+
+        studentEntity.get().setUsername(student.username().getValue());
     }
 
     private List<Student> toDomain(List<StudentEntity> userJpaEntities) {

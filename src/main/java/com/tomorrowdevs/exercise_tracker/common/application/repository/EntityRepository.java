@@ -13,6 +13,10 @@ public interface EntityRepository <E extends Entity> {
 
     E findByUuid(UUID uuid);
 
+    void editByUuid(E entity);
+
    //delete
+
+
 
 }

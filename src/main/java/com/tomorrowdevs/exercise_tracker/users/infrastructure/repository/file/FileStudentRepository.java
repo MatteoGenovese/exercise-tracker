@@ -26,12 +26,14 @@ public class FileStudentRepository implements StudentRepository {
         fileHandler.save(student);
     }
 
-    @Override public Student findUserByUuid(UUID uuid) {
+    @Override
+    public Student findByUuid(UUID uuid) {
         return null;
     }
 
-    @Override public Student editUserByUuid(Student student) {
-        return null;
+    @Override
+    public void editByUuid(Student entity) {
+
     }
 
 }

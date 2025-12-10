@@ -1,9 +1,13 @@
 package com.tomorrowdevs.exercise_tracker.cucumber.steps;
 
+import com.tomorrowdevs.exercise_tracker.users.application.repository.InMemoryStudentRepository;
+import com.tomorrowdevs.exercise_tracker.users.application.repository.StudentRepository;
 import com.tomorrowdevs.exercise_tracker.users.application.service.StudentReader;
 import com.tomorrowdevs.exercise_tracker.users.application.service.StudentWriter;
 import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentEmptyList;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.StudentReaderImpl;
+import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.StudentWriterImpl;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -20,15 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class GetStudentSteps {
 
     StudentWriter studentWriter;
-
+    StudentRepository studentRepository;
     StudentReader studentReader;
-    private List<Student> studentList;
 
+    private List<Student> studentList;
     private StudentEmptyList dataNotFound;
 
-    public GetStudentSteps(StudentWriter studentWriter, StudentReader studentReader) {
-        this.studentWriter = studentWriter;
-        this.studentReader = studentReader;
+    public GetStudentSteps() {
+        this.studentRepository = new InMemoryStudentRepository();
+        this.studentWriter = new StudentWriterImpl(studentRepository);
+        this.studentReader = new StudentReaderImpl(studentRepository);
     }
 
 

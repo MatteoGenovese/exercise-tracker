@@ -18,6 +18,7 @@ public class StudentEditorImpl implements StudentEditor {
     }
 
     @Override public Student edit(Student student) {
-        return studentRepository.editStudentByUuid(student);
+        studentRepository.save(student);
+        return student;
     }
 }

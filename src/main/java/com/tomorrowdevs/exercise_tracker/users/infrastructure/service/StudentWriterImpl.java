@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentWriterImpl implements StudentWriter {
 
-    private final StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    public StudentWriterImpl(
-            StudentRepository studentRepository
-    ) {
+    public StudentWriterImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

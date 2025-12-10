@@ -14,4 +14,4 @@ Feature: Edit User
       |uuid       | 8b9f5f7c-3e2d-4c9b-8f6a-0a72e0e3a5c9            |
       |username   | matteo.nuovoutente                              |
     When I edit a non present username
-    Then An error is throw with message "UUID not found"
+    Then An error is throw with message "Student not found"

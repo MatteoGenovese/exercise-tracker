@@ -12,7 +12,8 @@ import java.util.List;
 
 @Service
 public class StudentReaderImpl implements StudentReader {
-    private final StudentRepository studentRepository;
+
+    private StudentRepository studentRepository;
 
     @Autowired
     public StudentReaderImpl(StudentRepository studentRepository) {

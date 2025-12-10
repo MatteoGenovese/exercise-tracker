@@ -9,11 +9,9 @@ import com.tomorrowdevs.exercise_tracker.exercises.domain.model.TimeDuration;
 import com.tomorrowdevs.exercise_tracker.exercises.infrastructure.service.ExerciseTrackerImpl;
 import com.tomorrowdevs.exercise_tracker.users.application.repository.InMemoryStudentRepository;
 import com.tomorrowdevs.exercise_tracker.users.application.repository.StudentRepository;
-import com.tomorrowdevs.exercise_tracker.users.application.service.StudentWriter;
 import com.tomorrowdevs.exercise_tracker.users.domain.error.StudentNotFound;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Student;
 import com.tomorrowdevs.exercise_tracker.users.domain.model.Username;
-import com.tomorrowdevs.exercise_tracker.users.infrastructure.service.StudentWriterImpl;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -31,26 +29,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateExerciseSteps {
 
-    private StudentWriter studentWriter;
-    private ExerciseTracker exerciseTracker;
-    private StudentRepository studentRepository;
-    private ExerciseRepository exerciseRepository;
+    private  ExerciseTracker exerciseTracker;
+    private  StudentRepository studentRepository;
+    private  ExerciseRepository exerciseRepository;
 
-
-    private Student studentInDb;
     private Exercise exerciseInDb;
-    private UUID wrongUserId;
-    private Student studentNotPresent;
-    private Student studentSaved;
     private Exercise exerciseSaved;
     private StudentNotFound studentNotFoundException;
-
+    private UUID wrongStudentId;
 
     public CreateExerciseSteps() {
-
         this.studentRepository = new InMemoryStudentRepository();
-        this.studentWriter = new StudentWriterImpl(studentRepository);
-
         this.exerciseRepository = new InMemoryExerciseRepository();
         this.exerciseTracker = new ExerciseTrackerImpl(
                 exerciseRepository,
@@ -109,7 +98,7 @@ public class CreateExerciseSteps {
 
     @Given("the student {string}")
     public void theStudent(String studentUuid) {
-        studentInDb = studentRepository.findStudentByUuid(UUID.fromString(studentUuid));
+        Student studentInDb = studentRepository.findByUuid(UUID.fromString(studentUuid));
         assertNotNull(studentInDb);
     }
 
@@ -148,7 +137,7 @@ public class CreateExerciseSteps {
     @Given("the invalid student {string}")
     public void theInvalidStudent(String uuidAsString) {
         wrongStudentId = UUID.fromString(uuidAsString);
-        studentNotPresent = studentRepository.findStudentByUuid(wrongStudentId);
+        Student studentNotPresent = studentRepository.findByUuid(wrongStudentId);
         assertNull(studentNotPresent);
     }
 
@@ -173,26 +162,6 @@ public class CreateExerciseSteps {
         Assertions.assertEquals(studentNotFoundMessage, studentNotFoundException.getMessage());
 
     }
-
-    //    @Given("a non Registered Student with uuid {string} and a valid exercise track:")
-//    public void a_non_Registered_Student_with_uuid_and_a_valid_exercise_track(String uuidAsString,
-//            DataTable dataTable) {
-//        uuidNotPresentInDb = uuidAsString;
-//        Map<String, String> validExerciseData = dataTable.asMap(String.class, String.class);
-//
-//        notValidStudentUuidInExerciseTrack = ExerciseTrack.create(
-//                LocalDateTime.parse(validExerciseData.get("date")),
-//                ExerciseDescription.create(validExerciseData.get("description")),
-//                TimeDuration.create(validExerciseData.get("duration")),
-//                UUID.fromString(uuidAsString)
-//        );
-//    }
-//
-//
-//    @Then("An error is thrown with message {string}")
-//    public void an_error_is_thrown_with_message(String string) {
-//        Assertions.assertEquals("Student not found", studentNotFoundException.getMessage());
-//    }
 
 
 }

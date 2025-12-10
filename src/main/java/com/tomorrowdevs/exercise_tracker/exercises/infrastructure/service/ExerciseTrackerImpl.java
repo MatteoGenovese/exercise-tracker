@@ -33,7 +33,7 @@ public class ExerciseTrackerImpl implements ExerciseTracker {
     public Exercise saveExerciseTrack(Exercise exerciseTrack) {
 
         LocalDateTime dateTime;
-        Student student = studentRepository.findUserByUuid(exerciseTrack.studentUuid());
+        Student student = studentRepository.findByUuid(exerciseTrack.studentUuid());
 
         if (student == null) {
             throw StudentNotFound.uuidNotFound();
